@@ -6,9 +6,9 @@ export default function Cells({
   selectedMonthLength,
   currentDate,
   firstOfTheMonth,
+  selectedCell,
+  setSelectedCell,
 }) {
-  const [selectedCell, setSelectedCell] = useState(0);
-
   let dayCounter = 1;
 
   const cellRef = useRef([]);
@@ -23,15 +23,17 @@ export default function Cells({
     });
 
   const handleClickedCell = (e) => {
-    const cell = cellRef.current[e.target.id || e.target.parentElement.id];
+    if (e.target.id === "extra-cell") return;
+    const cell = cellRef.current[e.currentTarget.id];
     if (Number(cell.id) === selectedCell) return;
 
     if (selectedCell !== 0) {
       const previousCell = cellRef.current[selectedCell];
-      previousCell.style.border = "1px solid #3e3e3e5e";
+      previousCell.classList.remove("selected-cell");
     }
+
     setSelectedCell((c) => (c = Number(cell.id)));
-    cell.style.border = "1px solid lime";
+    cell.classList.add("selected-cell");
   };
 
   return (
